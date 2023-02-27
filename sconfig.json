@@ -27,7 +27,7 @@
     "filter":true,
     "commandprefix":"/",
     "messagecap":[false,3,1000]
-  },
+  },bakchat.40476.repl.co
   "ranks": {
     "owner": {
       "symbol": {"s":"{","e":"}"},
