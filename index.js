@@ -15,14 +15,13 @@ const logger={
 //joe mamamamamama
 try{
 const initTime=Date.now();
-const express=require('express');/*make it a website duh*/
-const bodyParser=require('body-parser');
-const app=express();
-const https=require('https');/*send SRV messages*/
-const http=require('http').Server(app);
-const readline=require('readline').createInterface({input: process.stdin,output: process.stdout});
-//TODO: configure to run with multiple ports --> https://stackoverflow.com/questions/19296797/running-node-js-http-server-on-multiple-ports
-const io=require('socket.io').listen(http);
+const express=require('express'),/*make website duh*/
+      bodyParser=require('body-parser'),
+      app=express(),
+      https=require('https'),/*send SRV messages*/
+      http=require('http').Server(app),
+      readline=require('readline').createInterface({input: process.stdin,output: process.stdout}),
+      io=require('socket.io').listen(http);
 console.log(fs.readFileSync('./logo.txt','utf8'));
 /*self made plugins*/
 /* const logger = require('./plugins/,/logger.js');*/
@@ -32,32 +31,18 @@ const cookieParser=require('./plugins/cookie-parser');
 var device = require('express-device');
 
 
-function SERV(){if(true){setTimeout(function(){
-var versionInfo=`BakChat version `+version+` -- as PID:`+process.pid+` on `+process.platform+`\n\n`+fs.readFileSync('assets/credits.txt','utf8')+`\n-------------------`;
+function SERV(){if(true){setTimeout(function(){;
 logger.trace(`server started, as PID:`+process.pid+` on `+process.platform)
-console.log(versionInfo);
-var recentHistory="",bar="",consoleLastRefresh,mtxsr;app.use(cookieParser());
-app.set('trust proxy', true);
-app.use(express.static('public'));
-app.use(device.capture());
-app.use(bodyParser.urlencoded({extended:true}));
-app.get('/',(req,res)=>{if(req.device.type==='desktop'){res.sendFile(__dirname+'/public/desktop.html');}else{res.sendFile(__dirname+'/public/mobile.html');}});
-app.get('/console.log',(req,res) =>{res.send(version+" - "+Date.now()+" -{"+(((Date.now()-consoleLastRefresh)-config.consoleRefreshRate)*-1)+' & '+Math.trunc((Date.now()-initTime)/1000)+"}["+config.server.name+"]++("+req.ip+")\n"+bar+recentHistory);});
-/*app.post('/data.IN',(req,res)=>{if(req.query.psk===envAR.REMOTE){res.send(req);fs.writeFileSync('./'+req.query.path,req.data);}else{res.send('RiP el B0Z0')}});*/
-app.post('/profile.IN',(req,res)=>{var user=require(`./users/${req.query.username}.json`);if(req.query.psk===user.psk){res.send(req);if(user.profile=undefined){user.profile={};}user.profile.desc=req.query.desc;user.profile.status=req.query.status;fs.writeFileSync(`./users/${req.query.username}.json`,JSON.stringify(user))}else{res.send('RiP el B0Z0')}});
-app.get('/profile.OUT',(req,res)=>{try{eval(fs.readFileSync('./plugins/,/getUserData.js','utf8'));}catch(e){res.send(e);logger.ERROR(e)}});
-app.get('/SRV.in',(req,res)=>{toRoom(req.query.room).emit('message',{room:req.query.room,name:'SRV:'+req.query.name,message:req.query.msg});res.send(req.query);});
-app.get('/logs.OUT',(req,res)=>{if(req.query.psk===envAR.REMOTE){if(req.query.del==='true'){fs.writeFileSync('./chatlogs/'+req.query.logfile,'')}res.send(fs.readFileSync('./chatlogs/'+req.query.logfile,'utf8'));}else{res.send(/*JSON.stringify(envAR)+*/'RiP el B0Z0')}});
-app.get('/data.OUT',(req,res)=>{if(req.query.psk===envAR.REMOTE){res.send(fs.readFileSync('./'+req.query.path,req.query.data));}else{res.send('RiP el B0Z0')}});
-app.get('/cmd.IN',(req,res)=>{if(req.query.psk===envAR.REMOTE){eval(require('url').parse(req.url,true).query.cmd);res.send(true);}else{logger.WARN('remote input code is invalid');res.send(false);}});
-app.get('/:room',(req,res)=>{if(req.device.type==='desktop'){res.sendFile(__dirname+'/public/desktop.html');}else{res.sendFile(__dirname+'/public/mobile.html');}});
-app.get('*',(req,res) =>{res.sendFile(__dirname+'/public/404.html');});
+console.log(`BakChat version `+version+` -- as PID:`+process.pid+` on `+process.platform+`\n\n`+fs.readFileSync('assets/credits.txt','utf8')+`\n-------------------`);
+var recentHistory="",bar="",consoleLastRefresh,mtxsr;
+/*app.use*/eval(fs.readFileSync('./plugins/,/use.js','utf8'));
+/*request handlers*/eval(fs.readFileSync('./plugins/,/get.js','utf8'));
 
 http.listen(3000,()=>undefined);
 io.engine.generateId=(req)=>{return randHex(6);};
-/*load the functions*/eval(fs.readFileSync('./plugins/,/functions.js','utf8'));
-/*fix directories if imported from github???*/eval(fs.readFileSync('./plugins/,/folders.js','utf8'));
-/*define passcodes as based on whether they are in the secrest file or not*/eval(fs.readFileSync('./plugins/,/passcodes.js','utf8'));
+/*load functions*/eval(fs.readFileSync('./plugins/,/functions.js','utf8'));
+/*fix directories???*/eval(fs.readFileSync('./plugins/,/folders.js','utf8'));
+/*define passcodes */eval(fs.readFileSync('./plugins/,/passcodes.js','utf8'));
 
 if(config.rm_publicLogs_startup){makeFolder('./public/chatlogs');delFolder('./public/chatlogs');setTimeout(function(){makeFolder('./public/chatlogs')},50);setTimeout(function(){makeFolder('./public/chatlogs')},100);}
   setInterval(function(){console.clear();if((((Date.now()-consoleLastRefresh)-config.consoleRefreshRate)*-1)<0){mtxsr='\x1b[41m'}else{mtxsr='\x1b[42m'};bar="";for(let i=0;i<process.stdout.columns;i++){bar=bar+"-"};for (let i=0;i<linez(recentHistory);i++){if(linez(recentHistory)>(process.stdout.rows-3)){recentHistory=RemoveFirstLine(recentHistory)}}console.log(version+" - "+Date.now()+" -{"+mtxsr+(((Date.now()-consoleLastRefresh)-config.consoleRefreshRate)*-1)+"\x1b[0m & "+Math.trunc((Date.now()-initTime)/1000)+"}["+config.server.name+"]\n"+bar+recentHistory);consoleLastRefresh=Date.now();},config.consoleRefreshRate);
